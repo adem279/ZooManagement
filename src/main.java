@@ -1,16 +1,47 @@
 public class main {
     public static void main(String[] args) {
-        Animal lion=new Animal("cats","lion",20,true);
+        // Créer un zoo avec le nom et la ville
+        Zoo zoo = new Zoo("Zoo National", "Lyon");
 
-         Zoo myzoo= new Zoo("myzoo","Tunis",20);
-        myzoo.animals[0] = lion; // Ajout du lion dans le zoo
+        // Créer quelques animaux
+        Animal lion = new Animal("Felidae", "Lion", 5, true);
+        Animal tigre = new Animal("Felidae", "Tigre", 3, true);
+        Animal aigle = new Animal("Accipitridae", "Aigle", 2, false);
 
-        System.out.println("Nom du zoo : " + myzoo.name);
-        System.out.println("Ville du zoo : " + myzoo.city);
-        System.out.println("Nombre de cages : " + myzoo.nbrCages);
-        System.out.println("Famille de l'animal : " + myzoo.animals[0].family);
-        System.out.println("Nom de l'animal : " + myzoo.animals[0].name);
-        System.out.println("Âge de l'animal : " + myzoo.animals[0].age + " ans");
+        // Ajouter des animaux dans le zoo
+        zoo.addAnimal(lion);
+        zoo.addAnimal(tigre);
+        zoo.addAnimal(aigle);
 
+        // Afficher tous les animaux dans le zoo
+        zoo.displayAnimals();
+
+        // Essayer d'ajouter plus d'animaux que la capacité
+        for (int i = 0; i < 25; i++) {
+            Animal elephant = new Animal("Elephantidae", "Elephant" + (i + 1), 10, true);
+            zoo.addAnimal(elephant);
+        }
+
+        // Afficher tous les animaux après les ajouts
+        zoo.displayAnimals();
+
+        // Supprimer un animal du zoo
+        boolean removed = zoo.removeAnimal(tigre); // Essayer de supprimer le tigre
+        if (removed) {
+            System.out.println("Le tigre a été supprimé.");
+        } else {
+            System.out.println("Échec de la suppression du tigre.");
+        }
+
+        // Afficher tous les animaux après la suppression
+        zoo.displayAnimals();
+
+        // Essayer de supprimer un animal qui n'existe pas
+        boolean removedNonExistent = zoo.removeAnimal(new Animal("Felidae", "Lynx", 4, true));
+        if (removedNonExistent) {
+            System.out.println("Le lynx a été supprimé.");
+        } else {
+            System.out.println("Échec de la suppression du lynx.");
+        }
     }
 }
