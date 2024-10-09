@@ -1,16 +1,24 @@
 public class Zoo {
     public static final int NBR_CAGES = 25; // Nombre constant de cages
-    public Animal[] animals;
-    public String name;
-    public String city;
-    public int animalCount; // Compteur d'animaux
+    private Animal[] animals;
+    private String name;
+    private String city;
+    private int animalCount; // Compteur d'animaux
 
     // Constructeur pour initialiser le zoo
     public Zoo(String name, String city) {
-        animals = new Animal[NBR_CAGES]; // Initialiser le tableau d'animaux avec le nombre de cages fixe
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Le nom du zoo ne doit pas être vide.");
+        }
+        animals = new Animal[NBR_CAGES]; // Initialiser le tableau d'animaux
         this.name = name;
         this.city = city;
-        this.animalCount = 0; // Initialiser le compteur d'animaux à 0
+        this.animalCount = 0; // Initialiser le compteur d'animaux
+    }
+
+    // Méthode pour obtenir le nom du zoo
+    public String getName() {
+        return name; // Retourner le nom du zoo
     }
 
     // Méthode pour vérifier si le zoo est plein
@@ -36,50 +44,33 @@ public class Zoo {
         // Ajouter l'animal si toutes les vérifications sont passées
         animals[animalCount] = animal; // Ajouter l'animal à la case correspondante
         animalCount++; // Incrémenter le compteur d'animaux
+        System.out.println("L'animal " + animal.getName() + " a été ajouté au zoo.");
         return true; // L'ajout a bien été fait
     }
 
-    // Méthode pour afficher tous les animaux dans le zoo
+    // Méthode pour afficher les animaux dans le zoo
     public void displayAnimals() {
-        System.out.println("Animaux dans le zoo :");
-        if (animalCount == 0) {
-            System.out.println("Aucun animal dans le zoo.");
-            return; // Si aucun animal n'est présent, sortir de la méthode
-        }
-        for (int i = 0; i < animalCount; i++) { // Parcourir uniquement les animaux ajoutés
+        System.out.println("Animaux dans le zoo " + name + " à " + city + ":");
+        for (int i = 0; i < animalCount; i++) {
             animals[i].displayAnimal();
-            System.out.println("---------------------");
+            System.out.println();
         }
     }
 
-    // Méthode pour chercher un animal dans le zoo par son nom
-    public int searchAnimal(String animalName) {
-        for (int i = 0; i < animalCount; i++) { // Parcourir uniquement les animaux ajoutés
-            if (animals[i].getName().equalsIgnoreCase(animalName)) {
-                return i; // Retourner l'indice si l'animal est trouvé
+    // Méthode pour retirer un animal
+    public boolean removeAnimal(Animal animal) {
+        for (int i = 0; i < animalCount; i++) {
+            if (animals[i].getName().equalsIgnoreCase(animal.getName())) {
+                // Déplacer les animaux suivants vers la gauche
+                for (int j = i; j < animalCount - 1; j++) {
+                    animals[j] = animals[j + 1];
+                }
+                animals[animalCount - 1] = null; // Nettoyer la dernière case
+                animalCount--; // Décrémenter le compteur d'animaux
+                return true; // Suppression réussie
             }
         }
-        return -1; // Retourner -1 si l'animal n'est pas trouvé
-    }
-
-    // Méthode pour supprimer un animal du zoo
-    public boolean removeAnimal(Animal animal) {
-        int index = searchAnimal(animal.getName()); // Rechercher l'animal par son nom
-
-        if (index == -1) {
-            System.out.println("L'animal " + animal.getName() + " n'existe pas dans le zoo.");
-            return false; // Retourner false si l'animal n'est pas trouvé
-        }
-
-        // Décaler les éléments du tableau pour supprimer l'animal
-        for (int i = index; i < animalCount - 1; i++) {
-            animals[i] = animals[i + 1]; // Déplacer chaque animal à gauche
-        }
-
-        // Mettre le dernier animal à null pour éviter les références erronées
-        animals[animalCount - 1] = null;
-        animalCount--; // Décrémenter le compteur d'animaux
-        System.out.println("L'animal " + animal.getName() + " a été supprimé du zoo.");
-        return true; // La suppression a réussi
+        System.out.println("L'animal " + animal.getName() + " n'existe pas dans le zoo.");
+        return false; // L'animal n'a pas été trouvé
     }
 }

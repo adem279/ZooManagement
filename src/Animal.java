@@ -1,9 +1,13 @@
 public class Animal {
-    public  String family;
-    public String name;
-    public int age;
-    public boolean isMammal;
+    private String family;
+    private String name;
+    private int age;
+    private boolean isMammal;
+
     public Animal(String family, String name, int age, boolean isMammal) {
+        if (age < 0) {
+            throw new IllegalArgumentException("L'âge ne peut pas être négatif.");
+        }
         this.family = family;
         this.name = name;
         this.age = age;
@@ -32,7 +36,12 @@ public class Animal {
     }
 
     public void setAge(int age) {
-        this.age = age;
+        if (age < 0) {
+            System.out.println("L'âge ne peut pas être négatif. Valeur par défaut: 0.");
+            this.age = 0; // Valeur par défaut
+        } else {
+            this.age = age;
+        }
     }
 
     public boolean isMammal() {
@@ -42,11 +51,11 @@ public class Animal {
     public void setMammal(boolean isMammal) {
         this.isMammal = isMammal;
     }
+
     public void displayAnimal() {
         System.out.println("Famille: " + family);
         System.out.println("Nom: " + name);
         System.out.println("Âge: " + age);
         System.out.println("Est un mammifère: " + (isMammal ? "Oui" : "Non"));
     }
-
 }
