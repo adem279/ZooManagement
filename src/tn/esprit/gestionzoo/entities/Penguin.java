@@ -22,4 +22,3 @@ public class Penguin extends Aquatic {
         return super.toString() + ", swimmingDepth:" + swimmingDepth;
     }
 }
-
